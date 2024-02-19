@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:toilet_app/pages/map_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-void main() {
+void main() async{
+ 
   runApp(const MyApp());
 }
 
@@ -17,10 +19,11 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MapSample(),
     );
   }
 }
+
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);

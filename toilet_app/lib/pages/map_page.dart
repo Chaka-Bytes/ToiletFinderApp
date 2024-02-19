@@ -1,49 +1,40 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
 
-class MapSample extends StatefulWidget {
-  const MapSample({super.key});
+class MapPage extends StatefulWidget {
+  const MapPage({super.key});
 
   @override
-  State<MapSample> createState() => MapSampleState();
+  State<MapPage> createState() => _MapPageState();
 }
 
-class MapSampleState extends State<MapSample> {
-  final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
-
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
-
-  static const CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
+class _MapPageState extends State<MapPage> {
+  static const LatLng _KocUni = LatLng(41.20621054727754, 29.072417560915472);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: GoogleMap(
-        mapType: MapType.hybrid,
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
+        initialCameraPosition: CameraPosition(target: _KocUni, zoom: 15.0),
+        markers: {
+          Marker(
+            markerId: MarkerId('KocUni'),
+            icon: BitmapDescriptor.defaultMarker,
+            position: _KocUni,
+            infoWindow: InfoWindow(title: 'Koc University'),
+          ),
+          Marker(
+            markerId: MarkerId('KocUniRumeliFeneri'),
+            icon: BitmapDescriptor.defaultMarker,
+            position: LatLng(41.19910700415913, 29.072074238185998),
+            infoWindow:
+                InfoWindow(title: 'Koc University Rumeli Feneri Campus'),
+          ),
         },
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToTheLake,
-        label: const Text('To the lake!'),
-        icon: const Icon(Icons.directions_boat),
-      ),
     );
-  }
-
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
 }
